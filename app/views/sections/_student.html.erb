@@ -1,5 +1,5 @@
 <% @students.each do |student| %>
-  <tr>
+  <tr class="list-group-item-action" data-toggle="modal" data-target="#edit-modal">
     <th scope="row" class="text-center"><%= student.id %></th>
     <td class="text-center"><%= student.name %></td>
     <td class="text-center"><%= student.email %></td>

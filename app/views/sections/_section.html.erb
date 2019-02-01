@@ -1,3 +1,7 @@
 <% @sections.each do |section| %>
-  <button id='<%= section.id %>' type="button" class="btn btn-outline-primary btn-sm btn-block"><%= section.name %></button>
+  <% if section.id === 1 %>
+    <button id='<%= section.id %>' type="button" class="btn btn-success btn-sm btn-block section"><%= section.name %></button>
+  <% else %>
+    <button id='<%= section.id %>' type="button" class="btn btn-outline-success btn-sm btn-block section"><%= section.name %></button>
+  <% end %>
 <% end %>
