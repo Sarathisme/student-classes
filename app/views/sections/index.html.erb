@@ -17,36 +17,72 @@
     <div class="row main-row">
       <div class="col-lg-2">
         <div id="groups">
-          <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#section-form">+ Add Group</button>
-            <%= render partial:'section', object: @sections %>
+          <button id="section_add_button" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#section-form">+ Add Group</button>
+          <%= render partial:'section', object: @sections %>
         </div>
       </div>
 
       <div class="col-lg-10">
         <div id="records">
           <nav class="navbar navbar-light bg-light">
-            <button id="add_button" class="btn btn-outline-primary btn-sm ml-auto" data-toggle="modal" data-target="#student-form">+ Add Button</button>
+
+            <% if @sections.size > 0 %>
+              <div class="form-inline">
+                <input id='section_name_edit' class="form-control mr-sm-2" type="text" value="<%= @sections.first.name %>"  data-name="<%= @sections.first.name %>" aria-label="Section">
+                <button id='section_name_save' class="btn btn-outline-success my-2 my-sm-0">Save</button>
+                <button id='delete_section' class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+              </div>
+            <% else %>
+              <div class="form-inline">
+                <input id='section_name_edit' class="form-control mr-sm-2" type="text" value=""  data-name="" aria-label="Section">
+                <button id='section_name_save' class="btn btn-outline-success my-2 my-sm-0">Save</button>
+                <button id='delete_section' class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+              </div>
+            <% end %>
+
+            <button id="add_button" class="btn btn-outline-primary btn-sm ml-auto" data-toggle="modal" data-target="#student-form">+ Add Student</button>
           </nav>
           <br>
 
-          <div class="data" id="<%= @sections.first.id %>">
-            <table class="table">
-              <thead>
-              <tr>
-                <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Name</th>
-                <th scope="col" class="text-center">Email</th>
-                <th scope="col" class="text-center">GPA</th>
-                <th scope="col" class="text-center">Action</th>
-              </tr>
-              </thead>
-              <tbody>
+          <% if @sections.size > 0 %>
+            <div class="data" id="<%= @sections.first.id %>">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col" class="text-center">#</th>
+                  <th scope="col" class="text-center">Name</th>
+                  <th scope="col" class="text-center">Email</th>
+                  <th scope="col" class="text-center">GPA</th>
+                  <th scope="col" class="text-center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
 
                 <%= render partial:'student', object: @students %>
 
-              </tbody>
-            </table>
-          </div>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="data" id="">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col" class="text-center">#</th>
+                  <th scope="col" class="text-center">Name</th>
+                  <th scope="col" class="text-center">Email</th>
+                  <th scope="col" class="text-center">GPA</th>
+                  <th scope="col" class="text-center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <%= render partial:'student', object: @students %>
+
+                </tbody>
+              </table>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
@@ -112,8 +148,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-danger mr-auto" id="delete_group">Delete</button>
-            <button type="button" class="btn btn-outline-primary" id="edit_group">Save changes</button>
+            <button type="button" class="btn btn-outline-primary" id="save_section" data-dismiss="modal">Save changes</button>
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>

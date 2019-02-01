@@ -1,9 +1,11 @@
-<% @students.each do |student| %>
-  <tr class="list-group-item-action" id='<%= student.id %>' data-toggle="modal" data-target="#student-modal">
-    <th scope="row" class="text-center"><%= student.id %></th>
-    <td class="text-center name"><%= student.name %></td>
-    <td class="text-center email"><%= student.email %></td>
-    <td class="text-center gpa"><%= student.gpa %></td>
-    <td class="text-center"><a href='#' class="fas fa-trash"></a></td>
-  </tr>
+<% if @students != nil %>
+  <% @students.each do |student| %>
+    <tr class="list-group-item-action" id='<%= student.id %>' data-toggle="modal" data-target="#student-form">
+      <th scope="row" class="text-center"><%= student.id %></th>
+      <td class="text-center name"><%= student.name %></td>
+      <td class="text-center email"><%= student.email %></td>
+      <td class="text-center gpa"><%= student.gpa %></td>
+      <td class="text-center"><a href='#' class="fas fa-trash"></a></td>
+    </tr>
+  <% end %>
 <% end %>

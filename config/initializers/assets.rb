@@ -9,7 +9,8 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.paths << Rails.root.join('node_modules')
 Rails.application.config.assets.precompile += %w( sections.css )
 Rails.application.config.assets.precompile += %w( sections.js )
-Rails.application.config.assets.precompile += %w( crud.js )
+Rails.application.config.assets.precompile += %w( crud_student.js )
+Rails.application.config.assets.precompile += %w( crud_section.js )
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
