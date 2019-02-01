@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student</title>
+</head>
+
+<body>
+<div>
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-graduation-cap"></i>
+      Records
+    </a>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row main-row">
+      <div class="col-lg-2">
+        <div id="groups">
+          <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#section-form">+ Add Group</button>
+            <%= render partial:'section', object: @sections %>
+        </div>
+      </div>
+
+      <div class="col-lg-10">
+        <div id="records">
+          <nav class="navbar navbar-light bg-light">
+            <button id="add_button" class="btn btn-outline-primary btn-sm ml-auto" data-toggle="modal" data-target="#student-form">+ Add Button</button>
+          </nav>
+          <br>
+
+          <div class="data" id="<%= @sections.first.id %>">
+            <table class="table">
+              <thead>
+              <tr>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center">Name</th>
+                <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center">GPA</th>
+                <th scope="col" class="text-center">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+
+                <%= render partial:'student', object: @students %>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="student-form" aria-labelledby="student-form" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+
+              <div class="form-group">
+                <label for="email_add">Email Address</label>
+                <input type="email" id="email_add" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" required>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+              </div>
+
+              <div class="form-group">
+                <label for="name_add">Full Name</label>
+                <input type="text" id="name_add" class="form-control" aria-describedby="nameHelp" required placeholder="Enter Full Name" required>
+                <small id="nameHelp" class="form-text text-muted">Please enter your correct details.</small>
+              </div>
+
+              <div class="form-group">
+                <label for="gpa_add">GPA</label>
+                <input type="number" id="gpa_add"  class="form-control" aria-describedby="studentHelp" placeholder="Enter GPA" maxlength="4" required>
+                <small id="studentHelp" class="form-text text-muted">Please enter the correct GPA.</small>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" id="edit_data">Save changes</button>
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="section-form" aria-labelledby="section-form" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Section Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+
+              <div class="form-group">
+                <label for="name_add">Section Name</label>
+                <input type="text" id="name_section" class="form-control" aria-describedby="sectionHelp" required placeholder="Enter Section Name" required>
+                <small id='sectionHelp' class="form-text text-muted">Please enter the correct details.</small>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger mr-auto" id="delete_group">Delete</button>
+            <button type="button" class="btn btn-outline-primary" id="edit_group">Save changes</button>
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+</div>
+</body>
+</html>
