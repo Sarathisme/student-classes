@@ -32,8 +32,10 @@ $(document).ready(function () {
 
     });
 
-    $(document).on('click', 'tr', function() {
-        var id = $(this).attr('id');
+    $(document).on('click', '.edit_student', function() {
+        var id = $(this).parent().attr('id');
+
+        $('#student-form').modal('toggle');
 
         $('.modal-title').html('Edit Details');
         $('#add_data').attr('id', 'edit_data');
@@ -60,5 +62,4 @@ $(document).ready(function () {
 
         $('#edit_data').attr('id', 'add_data');
     });
-
 });

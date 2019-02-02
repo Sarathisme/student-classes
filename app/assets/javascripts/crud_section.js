@@ -18,6 +18,7 @@ $(document).ready(function(){
                     next_button.attr('class', 'btn btn-success btn-sm btn-block section');
                     next_button.click();
                 } else {
+                    $('tbody').children().remove();
                     $('#section_name_edit').val('').attr('data-name', '');
                     $('.data').attr('id', '');
                 }

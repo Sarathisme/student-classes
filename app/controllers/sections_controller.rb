@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'custom_validator'
 
 class SectionsController < ApplicationController
   skip_before_action :verify_authenticity_token
@@ -23,6 +24,93 @@ class SectionsController < ApplicationController
       email: @student.first.email,
       gpa: @student.first.gpa
     }
+  end
+
+
+  def add_student
+    section_id = params['section_id']
+    email = params['email']
+    name = params['name']
+    gpa = params['gpa']
+
+    @validator = CustomValidator.new(name, email, gpa)
+
+    if !@validator.validate_name? && !@validator.validate_gpa? && !@validator.validate_email?
+      if Student.exists?(email: email, section_id: section_id)
+        render json: {
+          param: 'failure',
+          msg: 'Student exists!'
+        }
+      else
+        begin
+          @student = Student.new(name: name, gpa: gpa, email: email, section_id: section_id)
+          @student .save
+
+          render json: {
+            param: 'success',
+            msg: {
+                name: @student.name,
+                email: @student.email,
+                gpa: @student.gpa,
+                id: @student.id
+              }
+          }
+        rescue
+
+          render json: {
+            param: 'failure',
+            msg: 'Server not responding'
+          }
+        end
+      end
+    else
+      render json: {
+        param: "failure",
+        msg: @validator.get_error_msg(email, name, gpa)
+      }
+    end
+  end
+
+  def edit_student
+    email = params['email']
+    name = params['name']
+    gpa = params['gpa']
+
+    @validator = CustomValidator.new(name, email, gpa)
+
+    if !@validator.validate_name? && !@validator.validate_gpa? && !@validator.validate_email?
+      if !Student.exists?(email: email)
+        render json: {
+          param: 'failure',
+          msg: 'Student does not exists!'
+        }
+      else
+        begin
+          @student = Student.where("email = '#{email}'")
+          @student.update_all(name: name, email: email, gpa: gpa)
+
+          render json: {
+            param: 'success',
+            msg: {
+                name: @student.first.name,
+                email: @student.first.email,
+                gpa: @student.first.gpa,
+                id: @student.first.id
+            }
+          }
+        rescue
+          render json: {
+            param: 'failure',
+            msg: 'Server not responding'
+          }
+        end
+      end
+    else
+      render json: {
+        param: "failure",
+        msg: @validator.get_error_msg(email, name, gpa)
+      }
+    end
   end
 
   def delete_student
