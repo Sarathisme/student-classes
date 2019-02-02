@@ -18,10 +18,14 @@ $(document).ready(function() {
                     'id': id
                 },
                 success: function (data, text, status) {
-                    element.parent().parent().remove();
+                    if(data.param === 'success') {
+                        element.parent().parent().remove();
+                    }else{
+                        appendAlerts(data.msg);
+                    }
                 },
                 error: function (data, text, status) {
-                    alert(data);
+                    appendAlerts(data)
                 }
             });
         }
@@ -35,7 +39,7 @@ $(document).ready(function() {
         var gpa = $('#gpa_add').val();
 
         if(isNaN(parseInt(section_id))){
-            alert("Enter a section");
+            appendAlerts("Enter a section");
         } else {
 
             $.ajax({
@@ -59,12 +63,12 @@ $(document).ready(function() {
                        $('tbody').append(row);
                        $('#student-form').modal('toggle');
                    } else {
-                        alert("Student exists!");
+                        appendAlerts("Student exists!");
                    }
                 },
                 error: function (response) {
                     console.log(response);
-                    alert(response);
+                    appendAlerts(response);
                 }
             });
         }
@@ -92,14 +96,23 @@ $(document).ready(function() {
                    student.find('.email').html(response.msg.email);
                    student.find('.gpa').html(response.msg.gpa);
                } else {
-                   alert(response.msg);
+                   appendAlerts(response.msg);
                }
            }, error: function (response) {
-                alert(response.msg);
+                appendAlerts(response.msg);
             }
         });
     });
-
-
-
 });
+
+function appendAlerts(message) {
+
+    var alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">\n' +
+        '  <strong>Holy guacamole!</strong> You should check in on some of those fields below.\n' +
+        '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+        '    <span aria-hidden="true">&times;</span>\n' +
+        '  </button>\n' +
+        '</div>';
+
+    $('#alerts').append(alert);
+}

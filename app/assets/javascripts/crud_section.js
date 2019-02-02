@@ -12,19 +12,23 @@ $(document).ready(function(){
                 id: section_id
             },
             success: function (response) {
-                $('#groups #' + section_id).remove();
-                const next_button = get_next_button(section_id);
-                if(next_button !== -1){
-                    next_button.attr('class', 'btn btn-success btn-sm btn-block section');
-                    next_button.click();
-                } else {
-                    $('tbody').children().remove();
-                    $('#section_name_edit').val('').attr('data-name', '');
-                    $('.data').attr('id', '');
+                if (response.param === 'success') {
+                    $('#groups #' + section_id).remove();
+                    const next_button = get_next_button(section_id);
+                    if (next_button !== -1) {
+                        next_button.attr('class', 'btn btn-success btn-sm btn-block section');
+                        next_button.click();
+                    } else {
+                        $('tbody').children().remove();
+                        $('#section_name_edit').val('').attr('data-name', '');
+                        $('.data').attr('id', '');
+                    }
+                }else{
+                    appendAlerts(response.msg);
                 }
             },
             error: function (response) {
-                alert(response);
+                appendAlerts(response);
             }
         });
     });
@@ -40,8 +44,12 @@ $(document).ready(function(){
                 name: name
             },
             success: function(response) {
-                groups.append('<button id="'+ response.msg +'" type="button" class="btn btn-success btn-sm btn-block section">'+ response.param +'</button>');
-                groups.find('button').filter('#' + response.msg.toString()).click();
+                if(response.param === 'success') {
+                    groups.append('<button id="' + response.msg.id + '" type="button" class="btn btn-success btn-sm btn-block section">' + response.msg.name + '</button>');
+                    groups.find('button').filter('#' + response.msg.toString()).click();
+                } else {
+                    appendAlerts(response.msg);
+                }
             }
         });
     });
@@ -59,12 +67,15 @@ $(document).ready(function(){
                     new: name
                 },
                 success: function (response) {
-                    console.log(response);
-                    input_field.attr('data-name', name);
-                    get_button(response.msg).html(name);
+                    if(response.param === 'success') {
+                        input_field.attr('data-name', name);
+                        get_button(response.msg).html(name);
+                    }else{
+                        appendAlerts(response.msg);
+                    }
                 },
                 error: function (response) {
-                    alert(response);
+                    appendAlerts(response);
                 }
             });
         }
@@ -83,4 +94,13 @@ function get_next_button(id) {
     }
 
     return -1;
+}
+
+function appendAlerts(message) {
+    var alert = '<div class="alert alert-danger">\n' +
+        '      <strong>Error!</strong> '+ message +'\n' +
+        '    <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+        '    <span aria-hidden="true">&times;</span>\n' +
+        '  </button></div>';
+    $('#alerts').append(alert);
 }

@@ -20,9 +20,9 @@ class SectionsController < ApplicationController
   def student
     @student = Student.where("id = #{params[:id]}")
     render json: {
-      name: @student.first.name,
-      email: @student.first.email,
-      gpa: @student.first.gpa
+        name: @student.first.name,
+        email: @student.first.email,
+        gpa: @student.first.gpa
     }
   end
 
@@ -38,8 +38,8 @@ class SectionsController < ApplicationController
     if !@validator.validate_name? && !@validator.validate_gpa? && !@validator.validate_email?
       if Student.exists?(email: email, section_id: section_id)
         render json: {
-          param: 'failure',
-          msg: 'Student exists!'
+            param: 'failure',
+            msg: 'Student exists!'
         }
       else
         begin
@@ -47,26 +47,26 @@ class SectionsController < ApplicationController
           @student .save
 
           render json: {
-            param: 'success',
-            msg: {
-                name: @student.name,
-                email: @student.email,
-                gpa: @student.gpa,
-                id: @student.id
+              param: 'success',
+              msg: {
+                  name: @student.name,
+                  email: @student.email,
+                  gpa: @student.gpa,
+                  id: @student.id
               }
           }
         rescue
 
           render json: {
-            param: 'failure',
-            msg: 'Server not responding'
+              param: 'failure',
+              msg: 'Server not responding'
           }
         end
       end
     else
       render json: {
-        param: "failure",
-        msg: @validator.get_error_msg(email, name, gpa)
+          param: "failure",
+          msg: @validator.get_error_msg(@validator.validate_email?, @validator.validate_name?, @validator.validate_gpa?)
       }
     end
   end
@@ -81,8 +81,8 @@ class SectionsController < ApplicationController
     if !@validator.validate_name? && !@validator.validate_gpa? && !@validator.validate_email?
       if !Student.exists?(email: email)
         render json: {
-          param: 'failure',
-          msg: 'Student does not exists!'
+            param: 'failure',
+            msg: 'Student does not exists!'
         }
       else
         begin
@@ -90,25 +90,25 @@ class SectionsController < ApplicationController
           @student.update_all(name: name, email: email, gpa: gpa)
 
           render json: {
-            param: 'success',
-            msg: {
-                name: @student.first.name,
-                email: @student.first.email,
-                gpa: @student.first.gpa,
-                id: @student.first.id
-            }
+              param: 'success',
+              msg: {
+                  name: @student.first.name,
+                  email: @student.first.email,
+                  gpa: @student.first.gpa,
+                  id: @student.first.id
+              }
           }
         rescue
           render json: {
-            param: 'failure',
-            msg: 'Server not responding'
+              param: 'failure',
+              msg: 'Server not responding'
           }
         end
       end
     else
       render json: {
-        param: "failure",
-        msg: @validator.get_error_msg(email, name, gpa)
+          param: "failure",
+          msg: @validator.get_error_msg(@validator.validate_email?, @validator.validate_name?, @validator.validate_gpa?)
       }
     end
   end
@@ -119,19 +119,19 @@ class SectionsController < ApplicationController
       begin
         @student.destroy_all
         render json: {
-          param: 'success',
-          msg: 'Student successfully deleted!'
+            param: 'success',
+            msg: 'Student successfully deleted!'
         }
       rescue StandardError
         render json: {
-          param: 'failure',
-          msg: 'Cannot destroy student from database!'
+            param: 'failure',
+            msg: 'Cannot destroy student from database!'
         }
       end
     else
       render json: {
-        param: 'failure',
-        msg: 'Student does not exists!'
+          param: 'failure',
+          msg: 'Student does not exists!'
       }
     end
   end
@@ -139,24 +139,36 @@ class SectionsController < ApplicationController
   def add_class
     @section = Section.where("name = '#{params[:name]}'")
 
-    begin
-      if @section.exists?
+    @validator = CustomValidator.new(params[:name])
+
+    if @validator.validate_name?
+      begin
+        if @section.exists?
+          render json: {
+              param: 'failure',
+              msg: 'Section exists already!'
+          }
+        else
+          @new_section = Section.new(name: params[:name])
+          @new_section.save
+          render json: {
+              param: 'success',
+              msg: {
+              id: @new_section.id,
+              name: @new_section.name
+            }
+          }
+        end
+      rescue
         render json: {
-          param: 'failure',
-          msg: 'Section exists already!'
-        }
-      else
-        @new_section = Section.new(name: params[:name])
-        @new_section.save
-        render json: {
-          param: @new_section.name,
-          msg: @new_section.id
+            param: 'failure',
+            msg: 'Server not responding!'
         }
       end
-    rescue
+    else
       render json: {
-        param: 'failure',
-        msg: 'Server not responding!'
+          param: 'failure',
+          msg: @validator.get_error_msg(@validator.validate_name?)
       }
     end
   end
@@ -176,19 +188,19 @@ class SectionsController < ApplicationController
         @section.destroy_all
 
         render json: {
-          param: 'success',
-          msg: 'Deleted successfully!'
+            param: 'success',
+            msg: 'Deleted successfully!'
         }
       else
         render json: {
-          param: 'failure',
-          msg: 'Section does not exist'
+            param: 'failure',
+            msg: 'Section does not exist'
         }
       end
     rescue
       render json: {
-        param: 'failure',
-        msg: 'Server not responding!'
+          param: 'failure',
+          msg: 'Server not responding!'
       }
     end
   end
@@ -201,19 +213,19 @@ class SectionsController < ApplicationController
         @sections.update_all(name: params[:new])
 
         render json: {
-          param: 'success',
-          msg: id
+            param: 'success',
+            msg: id
         }
       rescue
         render json: {
-          param: 'failure',
-          msg: 'Server not responding'
+            param: 'failure',
+            msg: 'Server not responding'
         }
       end
     else
       render json: {
-        param: 'failure',
-        msg: 'More than one exists!'
+          param: 'failure',
+          msg: 'More than one exists!'
       }
     end
   end

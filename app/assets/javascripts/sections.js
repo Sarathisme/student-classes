@@ -50,6 +50,9 @@ $(document).ready(function () {
                 $('#email_add').val(response.email);
                 $('#name_add').val(response.name);
                 $('#gpa_add').val(response.gpa);
+            },
+            error: function (response) {
+                appendAlerts(response);
             }
         });
     });
@@ -63,3 +66,12 @@ $(document).ready(function () {
         $('#edit_data').attr('id', 'add_data');
     });
 });
+
+function appendAlerts(message) {
+    var appendAlerts = '<div class="alert alert-danger">\n' +
+        '      <strong>Error!</strong> '+ message +'\n' +
+        '    <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+        '    <span aria-hidden="true">&times;</span>\n' +
+        '  </button></div>';
+    $('#appendAlertss').append(appendAlerts);
+}

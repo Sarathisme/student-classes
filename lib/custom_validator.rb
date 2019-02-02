@@ -28,5 +28,8 @@ class CustomValidator
     message += 'email, ' if email === true
     message += 'name, ' if name === true
     message += 'gpa, ' if gpa === true
+
+    message = message.chomp(',')
+    return message
   end
 end
