@@ -15,7 +15,7 @@ class CustomValidator
 
   def validate_name?
     @name = @name.to_s unless @name.is_a? String
-    /[a-zA-Z]$/.match(@name).nil?
+    /[a-zA-Z0-9]$/.match(@name).nil?
   end
 
   def validate_gpa?
@@ -24,10 +24,13 @@ class CustomValidator
   end
   
   def get_error_msg(email=nil, name=nil, gpa=nil)
+    puts "Here.....", email, name, gpa
     message = 'Check your entries: '
     message += 'email, ' if email === true
     message += 'name, ' if name === true
     message += 'gpa, ' if gpa === true
+
+    puts message, "Here......."
 
     message = message.chomp(',')
     return message

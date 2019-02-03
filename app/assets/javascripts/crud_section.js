@@ -46,7 +46,8 @@ $(document).ready(function(){
             success: function(response) {
                 if(response.param === 'success') {
                     groups.append('<button id="' + response.msg.id + '" type="button" class="btn btn-success btn-sm btn-block section">' + response.msg.name + '</button>');
-                    groups.find('button').filter('#' + response.msg.toString()).click();
+                    $('#section_name_edit').val('').attr('data-name', response.msg.name);
+                    groups.find('button').filter('#' + response.msg.id.toString()).click();
                 } else {
                     appendAlerts(response.msg);
                 }

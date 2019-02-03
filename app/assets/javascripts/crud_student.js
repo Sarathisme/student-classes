@@ -53,7 +53,7 @@ $(document).ready(function() {
                },
                 success: function(response) {
                    if(response.param === 'success') {
-                       var row = '<tr class="list-group-item-action" id=' + response.msg.id + ' data-toggle="modal" data-target="#student-form">\n' +
+                       var row = '<tr class="list-group-item-action" id=' + response.msg.id + '>\n' +
                            '      <th scope="row" class="text-center edit_student">' + response.msg.id + '</th>\n' +
                            '      <td class="text-center name edit_student">' + response.msg.name + '</td>\n' +
                            '      <td class="text-center email edit_student">' + response.msg.email + '</td>\n' +
